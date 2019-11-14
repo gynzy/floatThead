@@ -34,8 +34,8 @@
       // it should return a jquery object containing a wrapped set of table cells comprising a row that contains no col spans and is visible
       return $table.find('tbody tr:visible:first>*:visible');
     },
-    ariaLabel: function($table, $headerCell, columnIndex) { // This function will run for every header cell that exists in the table when we add aria-labels. 
-      // Override to customize the aria-label. NOTE: These labels will be added to the 'sizer cells' which get added to the real table and are not visible by the user (only screen readers), 
+    ariaLabel: function($table, $headerCell, columnIndex) { // This function will run for every header cell that exists in the table when we add aria-labels.
+      // Override to customize the aria-label. NOTE: These labels will be added to the 'sizer cells' which get added to the real table and are not visible by the user (only screen readers),
       // The number of sizer columns might not match the header columns in your real table - I insert one sizer header cell per column. This means that if your table uses colspans or multiple header rows,
       // this will not be reflected by sizer cells. This is why I am giving you the `columnIndex`.
       return $headerCell.text();
@@ -506,16 +506,13 @@
 
 
       function setFloatWidth(){
-        var tw = tableWidth($table, $fthCells, true);
-        var $container = responsive ? $responsiveContainer : $scrollContainer;
-        var width = $container.length ? getOffsetWidth($container[0]) : tw;
-        var floatContainerWidth = $container.css("overflow-y") !== 'hidden' ? width - scrollbarOffset.vertical : width;
+        var floatContainerWidth = tableWidth($table, $fthCells, true);
         $floatContainer.width(floatContainerWidth);
         if(locked){
-          var percent = 100 * tw / (floatContainerWidth);
+          var percent = 100;
           $floatTable.css('width', percent+'%');
         } else {
-          $floatTable.css('width', tw+'px');
+          $floatTable.css('width', floatContainerWidth+'px');
         }
       }
 
@@ -558,13 +555,13 @@
           }
 
           cols = cols.join('');
-  
+
           if(createElements){
             $fthRow.empty();
             $fthRow.append(psuedo);
             $fthCells = $fthRow.find('fthtd');
           }
-          
+
           $sizerCells = $sizerRow.find("th");
           if(!existingColGroup){
             $tableColGroup.html(cols);
